@@ -12,138 +12,193 @@
 </head>
 <body>
   <div class="page">
-    <header class="hero">
-      <div class="hero__content">
-        <div>
-          <p class="badge">IncNOC</p>
-          <h1>Centro de Incidentes com histórico inteligente</h1>
-          <p class="lead">Registre ocorrências, pesquise incidentes anteriores por palavras-chave e compartilhe evidências de forma rápida.</p>
+    <!-- TELA DE LOGIN -->
+    <section id="screen-login" class="screen screen--active">
+      <header class="hero">
+        <div class="hero__content">
+          <div>
+            <p class="badge">IncNOC</p>
+            <h1>Centro de Incidentes com histórico inteligente</h1>
+            <p class="lead">Registre ocorrências, pesquise incidentes anteriores por palavras-chave e compartilhe evidências de forma rápida.</p>
+          </div>
+          <form id="login-form" class="card card--floating">
+            <h2>Faça seu Login</h2>
+            <p class="helper">Acesse com o seu Email Institucional.</p>
+            <label class="field">
+              <span>Email institucional</span>
+              <input type="email" name="email" required placeholder="seu.email@empresa.com" />
+            </label>
+            <label class="field">
+              <span>Senha</span>
+              <input type="password" name="senha" required placeholder="********" />
+            </label>
+            <button type="submit" class="btn">Entrar no painel</button>
+            <p class="helper">Use suas credenciais internas. Os dados de acesso não são enviados ao Supabase.</p>
+          </form>
         </div>
-        <form id="login-form" class="card card--floating">
-          <h2>Acessar painel</h2>
-          <label class="field">
-            <span>Email institucional</span>
-            <input type="email" name="email" required placeholder="seu.email@empresa.com" />
-          </label>
-          <label class="field">
-            <span>Senha</span>
-            <input type="password" name="senha" required placeholder="••••••••" />
-          </label>
-          <button type="submit" class="btn">Entrar</button>
-          <p class="helper">Use suas credenciais internas. Os dados de acesso não são enviados ao Supabase.</p>
-        </form>
-      </div>
-    </header>
+      </header>
+    </section>
 
-    <main id="app" class="app" hidden>
-      <div class="app__top">
-        <div class="brand">IncNOC</div>
-        <form id="search-form" class="search">
-          <input id="search-term" type="search" placeholder="Buscar incidentes por palavra-chave" aria-label="Buscar incidentes" />
-          <button type="submit" aria-label="Buscar">🔍</button>
-        </form>
-        <nav class="quick-actions" aria-label="Atalhos de usuário">
-          <button type="button" class="ghost">Configurações</button>
-          <button type="button" class="ghost">Login</button>
-          <button type="button" class="ghost" id="toggle-theme">Tema</button>
-          <button type="button" class="ghost">Sobre</button>
-        </nav>
-      </div>
+    <!-- TELA DO PAINEL -->
+    <section id="screen-painel" class="screen" hidden>
+      <main id="app" class="app">
+        <div class="app__top">
+          <div class="brand">IncNOC</div>
 
-      <section class="panel-grid">
-        <article class="card">
-          <header class="card__header">
-            <div>
-              <p class="badge badge--muted">Registro</p>
-              <h2>Registrar novo incidente</h2>
-              <p class="helper">Preencha os campos para salvar o incidente no histórico.</p>
-            </div>
-            <div class="status" id="supabase-status">Supabase não configurado</div>
-          </header>
-          <form id="incident-form" class="form-grid">
-            <label class="field field--full">
-              <span>Encaminhe as evidências da ocorrência</span>
-              <input type="file" id="evidencia" name="evidencia" accept="image/*" />
-              <small>Envie imagens (PNG, JPG) com até 5MB. Elas serão convertidas em texto seguro para evitar erro binário.</small>
-            </label>
-            <label class="field">
-              <span>Qual empresa?</span>
-              <input type="text" name="empresa" required placeholder="Nome da empresa" />
-            </label>
-            <label class="field">
-              <span>Qual sistema?</span>
-              <input type="text" name="sistema" required placeholder="Nome do sistema" />
-            </label>
-            <label class="field">
-              <span>Qual parte do sistema foi afetada?</span>
-              <input type="text" name="parte" placeholder="Módulo, página ou processo" />
-            </label>
-            <label class="field">
-              <span>Qual data e hora aconteceu a ocorrência?</span>
-              <div class="inline">
-                <input type="date" name="data" required />
-                <input type="time" name="hora" required />
+          <form id="search-form" class="search">
+            <input
+              id="search-term"
+              type="search"
+              placeholder="Buscar incidentes por palavra-chave"
+              aria-label="Buscar incidentes"
+            />
+            <button type="submit" aria-label="Buscar">Buscar</button>
+          </form>
+
+          <nav class="quick-actions" aria-label="Atalhos de usuário">
+            <button type="button" class="ghost" id="open-settings">Configurações</button>
+            <button type="button" class="ghost" id="logout-button">Sair</button>
+            <button type="button" class="ghost">Sobre</button>
+          </nav>
+        </div>
+
+        <section class="panel-grid">
+          <!-- CARD: REGISTRAR INCIDENTE -->
+          <article class="card">
+            <header class="card__header">
+              <div>
+                <p class="badge badge--muted">Registro</p>
+                <h2>Registrar novo incidente</h2>
+                <p class="helper">Preencha os campos para salvar o incidente no histórico.</p>
               </div>
-            </label>
-            <label class="field">
-              <span>Quantos colaboradores foram afetados?</span>
-              <input type="number" name="afetados" min="0" placeholder="0" />
-            </label>
-            <label class="field field--full">
-              <span>Qual impacto é gerado se essa operação não for realizada?</span>
-              <textarea name="impacto" rows="3" placeholder="Descreva riscos, atrasos e impactos financeiros"></textarea>
-            </label>
-            <label class="field">
-              <span>ID do incidente</span>
-              <input type="text" name="idIncidente" placeholder="INC-0001" />
-            </label>
-            <label class="field field--full">
-              <span>Detalhamento do ocorrido</span>
-              <textarea name="detalhes" rows="4" placeholder="Relate o que aconteceu, passos e mensagens de erro"></textarea>
-            </label>
-            <div class="actions">
-              <button type="submit" class="btn">Salvar incidente</button>
-              <p id="form-feedback" class="helper"></p>
-            </div>
-          </form>
-        </article>
+              <div class="status" id="supabase-status">Supabase não configurado</div>
+            </header>
 
-        <article class="card">
-          <header class="card__header">
-            <div>
-              <p class="badge badge--muted">Supabase</p>
-              <h2>Conectar ao histórico</h2>
-              <p class="helper">Preencha a URL e a chave do projeto para salvar e buscar incidentes.</p>
-            </div>
-          </header>
-          <form id="supabase-form" class="form-grid">
-            <label class="field field--full">
-              <span>URL do projeto Supabase</span>
-              <input type="url" id="supabase-url" placeholder="https://abcd.supabase.co" />
-            </label>
-            <label class="field field--full">
-              <span>Chave anônima (anon key)</span>
-              <input type="password" id="supabase-key" placeholder="coloque sua anon key" />
-            </label>
-            <div class="actions">
-              <button type="submit" class="btn btn--ghost">Atualizar conexão</button>
-              <p class="helper">Nenhum dado é enviado até você usar Registrar ou Buscar.</p>
-            </div>
-          </form>
+            <form id="incident-form" class="form-grid">
+              <label class="field field--full">
+                <span>Encaminhe as evidências da ocorrência</span>
+                <input type="file" id="evidencia" name="evidencia" accept="image/*" />
+                <small>Envie imagens (PNG, JPG) com até 5MB. Elas serão convertidas em texto seguro para evitar erro binário.</small>
+              </label>
 
-          <div class="results">
-            <header class="results__header">
+              <label class="field">
+                <span>Qual empresa?</span>
+                <input type="text" name="empresa" required placeholder="Nome da empresa" />
+              </label>
+
+              <label class="field">
+                <span>Qual sistema?</span>
+                <input type="text" name="sistema" required placeholder="Nome do sistema" />
+              </label>
+
+              <label class="field">
+                <span>Qual parte do sistema foi afetada?</span>
+                <input type="text" name="parte" placeholder="Módulo, página ou processo" />
+              </label>
+
+              <label class="field">
+                <span>Qual data e hora aconteceu a ocorrência?</span>
+                <div class="inline">
+                  <input type="date" name="data" required />
+                  <input type="time" name="hora" required />
+                </div>
+              </label>
+
+              <label class="field">
+                <span>Quantos colaboradores foram afetados?</span>
+                <input type="number" name="afetados" min="0" placeholder="0" />
+              </label>
+
+              <label class="field field--full">
+                <span>Qual impacto é gerado se essa operação não for realizada?</span>
+                <textarea name="impacto" rows="3" placeholder="Descreva riscos, atrasos e impactos financeiros"></textarea>
+              </label>
+
+              <label class="field">
+                <span>ID do incidente</span>
+                <input type="text" name="idIncidente" placeholder="INC-0001" />
+              </label>
+
+              <label class="field field--full">
+                <span>Detalhamento do ocorrido</span>
+                <textarea name="detalhes" rows="4" placeholder="Relate o que aconteceu, passos e mensagens de erro"></textarea>
+              </label>
+
+              <div class="actions">
+                <button type="submit" class="btn">Salvar incidente</button>
+                <p id="form-feedback" class="helper"></p>
+              </div>
+            </form>
+          </article>
+
+          <!-- CARD: HISTÓRICO -->
+          <article class="card">
+            <header class="card__header">
               <div>
                 <p class="badge badge--muted">Histórico</p>
-                <h3>Resultados da busca</h3>
+                <h2>Resultados da busca</h2>
+                <p class="helper">Os incidentes encontrados aparecerão aqui após a pesquisa.</p>
               </div>
-              <span id="result-count" class="helper">Nenhuma busca realizada</span>
             </header>
-            <ul id="results-list" class="results__list" aria-live="polite"></ul>
+
+            <div class="results">
+              <header class="results__header">
+                <span id="result-count" class="helper">Nenhuma busca realizada</span>
+              </header>
+              <ul id="results-list" class="results__list" aria-live="polite"></ul>
+            </div>
+          </article>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <!-- BACKDROP DO MODAL DE CONFIGURAÇÕES -->
+  <div id="settings-backdrop" class="modal-backdrop" hidden></div>
+
+  <!-- MODAL DE CONFIGURAÇÕES -->
+  <div id="settings-modal" class="modal" hidden>
+    <div class="modal__content">
+      <header class="modal__header">
+        <h2>Configurações</h2>
+        <button
+          type="button"
+          class="ghost modal__close"
+          id="close-settings"
+          aria-label="Fechar configurações"
+        >
+          ✕
+        </button>
+      </header>
+
+      <section class="modal__section">
+        <p class="badge badge--muted">Supabase</p>
+        <p class="helper">Preencha a URL e a chave anônima para conectar ao seu projeto.</p>
+
+        <form id="supabase-form" class="form-grid">
+          <label class="field field--full">
+            <span>URL do projeto Supabase</span>
+            <input type="url" id="supabase-url" placeholder="https://abcd.supabase.co" />
+          </label>
+          <label class="field field--full">
+            <span>Chave anônima (anon key)</span>
+            <input type="password" id="supabase-key" placeholder="coloque sua anon key" />
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn btn--ghost">Atualizar conexão</button>
+            <p class="helper">Nenhum dado é enviado até você usar Registrar ou Buscar.</p>
           </div>
-        </article>
+        </form>
       </section>
-    </main>
+
+      <section class="modal__section">
+        <p class="badge badge--muted">Tema</p>
+        <p class="helper">Altere o tema da interface.</p>
+        <button type="button" class="btn btn--ghost" id="toggle-theme">
+          Tema: Escuro
+        </button>
+      </section>
+    </div>
   </div>
 
   <script src="script.js"></script>
