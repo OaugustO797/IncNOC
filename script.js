@@ -157,11 +157,18 @@ async function handleIncidentSubmit(event) {
     data: data.get('data'),
     hora: data.get('hora'),
     afetados: data.get('afetados'),
+    nomes_afetados: data.get('nomesAfetados'),
     impacto: data.get('impacto'),
     id_incidente: data.get('idIncidente'),
     detalhes: data.get('detalhes'),
     responsavel: currentUser || authData.user.email,
-    palavras_chave: [data.get('empresa'), data.get('sistema'), data.get('parte'), data.get('detalhes')]
+    palavras_chave: [
+      data.get('empresa'),
+      data.get('sistema'),
+      data.get('parte'),
+      data.get('detalhes'),
+      data.get('nomesAfetados')
+    ]
       .filter(Boolean)
       .join(', '),
     criado_em: new Date().toISOString()
@@ -247,6 +254,7 @@ function renderResults(items) {
         <span>Data: ${item.data || '-'}</span>
         <span>Hora: ${item.hora || '-'}</span>
         <span>Afetados: ${item.afetados ?? '-'}</span>
+        ${item.nomes_afetados ? `<span>Nomes: ${item.nomes_afetados}</span>` : ''}
       </div>
     `;
     resultsList.appendChild(li);
