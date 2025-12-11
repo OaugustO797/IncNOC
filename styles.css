@@ -335,6 +335,23 @@ textarea {
   margin: 0 0 6px;
 }
 
+.result-image {
+  margin: 8px 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  max-width: 100%;
+}
+
+.result-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+}
+
 .result-meta {
   display: flex;
   gap: 12px;

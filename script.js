@@ -232,9 +232,16 @@ function renderResults(items) {
   items.forEach((item) => {
     const li = document.createElement('li');
     li.className = 'result-card';
+    const evidenciaHtml = item.evidencia
+      ? `
+        <div class="result-image">
+          <img src="${item.evidencia}" alt="Evidência do incidente ${item.id_incidente || ''}" loading="lazy" />
+        </div>`
+      : '';
     li.innerHTML = `
       <h4>${item.id_incidente || 'Sem ID'} - ${item.sistema || 'Sistema'}</h4>
       <p>${item.detalhes || 'Sem descrição'}</p>
+      ${evidenciaHtml}
       <div class="result-meta">
         <span>Empresa: ${item.empresa || '-'}</span>
         <span>Data: ${item.data || '-'}</span>
